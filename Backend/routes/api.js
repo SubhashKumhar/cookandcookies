@@ -6,7 +6,9 @@ const Product = require("../Models/Product");
 const Banner = require("../Models/Banner");
 const Category = require("../Models/Category");
 const Order = require("../Models/Order");
+const mailInvoice = require("../mail/mail");
 const Joi = require("joi");
+const moment = require("moment");
 
 const productListSchema = Joi.object({
   product_cat: Joi.string().required(),
@@ -60,7 +62,7 @@ const createOrderSchema = Joi.object({
     landmark: Joi.string().required(),
   }),
   products: Joi.array().items(Joi.object({
-    _id:Joi.string().required(),
+    _id: Joi.string().required(),
     category_name: Joi.string().required(),
     customize: Joi.boolean().required(),
     image: Joi.string().required(),
@@ -383,13 +385,16 @@ router.delete("/category-delete/:id", (req, res) => {
     }
   });
 });
-
+//customer_name,mobile,email,address,landmark
+// total_amount
+// product_name,image,price,category_name,quantity,initial_price
+//order_id,
 // Order API
 router.post("/create-order", (req, res) => {
   let { user_detail, products, total_amount } = req.body;
   const validate = createOrderSchema.validate(req.body);
   if (validate.error) {
-    console.log(validate.error,'errro');
+    console.log(validate.error, 'errro');
     res.json(sendRes(false, 404, "", "error"));
   } else {
     const post = new Order({
@@ -397,17 +402,52 @@ router.post("/create-order", (req, res) => {
       products,
       total_amount
     });
-    post
-      .save()
-      .then((result) => {
-        console.log(result, "result");
 
-        res.json(sendRes(true, 200, {order_id:result._id}, "Place your order successfully"));
-
-      })
-      .catch((err) => {
+    post.save((err, result) => {
+      if (err) {
+        console.log(err);
         res.json(sendRes(false, 500, [], err));
-      });
+      }
+
+      let invoiceData = {
+        invoice_to: user_detail.customer_name,
+        invoice_to_mobile: user_detail.mobile,
+        invoice_to_email: user_detail.email,
+        invoice_to_address: user_detail.address,
+        invoice_to_landmark: user_detail.landmark,
+        invoice_no: `CC00-${result._id}`,
+        invoice_date: moment(new Date()).format('DD/MM/YYYY HH:mm'),
+        payable_amount: total_amount,
+        products: products,
+      }
+      mailInvoice.sendOrderMail(invoiceData);
+
+      console.log(result, "result");
+
+      res.json(sendRes(true, 200, { order_id: result._id }, "Place your order successfully"));
+    })
+      // .then((result) => {
+      //   //
+      //   let invoiceData = {
+      //     invoice_to: user_detail.customer_name,
+      //     invoice_to_mobile: user_detail.mobile,
+      //     invoice_to_email: user_detail.email,
+      //     invoice_to_address: user_detail.address,
+      //     invoice_no: `CC00-001`,
+      //     invoice_date: moment(new Date()).format('DD/MM/YYYY HH:mm'),
+      //     payable_amount: total_amount,
+      //     products: products,
+      //   }
+      //   mailInvoice.sendOrderMail(invoiceData);
+
+      //   console.log(result, "result");
+
+      //   res.json(sendRes(true, 200, { order_id: result._id }, "Place your order successfully"));
+
+      // })
+      // .catch((err) => {
+      //   res.json(sendRes(false, 500, [], err));
+      // });
   }
 });
 router.get("/order-list", async (req, res) => {

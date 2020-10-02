@@ -26,7 +26,8 @@ export const staticData = {
     "linkdin_link":'https://www.facebook.com/skr1195/about',
     'address':"154, Prajapati bhawan, Janta nagar, Sodala, Jaipur,302006",
     'aboutus':"About Us",
-    "business_hour":"10:00 AM - 10:00 PM"
+    "business_hour":"10:00 AM - 10:00 PM",
+    "delivery_note":'** Delivery charges will be extra if your ordered amount below ₹500 or for more detail contact to owner at Mob. +919461771993 | +918239734359'
     // "business_hour":[{'monday':{'start':"08:00",'end':'08:00'}},{'tuesday':{'start':"08:00",'end':'08:00'}},{'wednesday':{'start':"08:00",'end':'08:00'}},{'thursday':{'start':"08:00",'end':'08:00'}},{'friday':{'start':"08:00",'end':'08:00'}},{'saturday':{'start':"08:00",'end':'08:00'}},{'sunday':{'start':"08:00",'end':'08:00'}}]
 } 
 

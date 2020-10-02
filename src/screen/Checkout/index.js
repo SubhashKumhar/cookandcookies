@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AvForm,AvField } from 'availity-reactstrap-validation';
 import { validation } from '../../utils/Common';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -10,7 +10,8 @@ import Loading from '../../component/Loading';
 
 const Checkout = (props) => {
   let api = new API()
-  const [products,setProducts] = useState(JSON.parse(localStorage.getItem('products')))
+  let temp_products = JSON.parse(localStorage.getItem('products'))=== undefined || JSON.parse(localStorage.getItem('products'))=== null ? [] : JSON.parse(localStorage.getItem('products'))
+  const [products,setProducts] = useState(temp_products)
   const [loading,setLoading] = useState(false)
   const [order_id,setOrderId] = useState(undefined)
   const [thankopen,setThankOpen] = useState(false)
@@ -18,10 +19,15 @@ const Checkout = (props) => {
     customer_name:"",mobile:"",email:"",address:"",landmark:"",
   })
   let total_amount =0
-  products.forEach(element => {
-    delete element.__v
-    total_amount += element.price
-  })
+  
+  
+  useEffect(() => {
+    JSON.parse(localStorage.getItem('products'))=== undefined || JSON.parse(localStorage.getItem('products'))=== null && props.history.push('/')
+    products.forEach(element => {
+      delete element.__v
+      total_amount += element.price
+    })
+  },[])
   const handleChange = (e) => {
     setUserDetail({...user_detail,
       [e.target.name] : e.target.value

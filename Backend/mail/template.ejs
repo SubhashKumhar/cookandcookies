@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #fff
+        }
+
+        .main-view {
+            width: 74%;
+            /* align-self: center; */
+            /* justify-content: center; */
+            margin: auto;
+            /* border: 1px solid black; */
+            box-shadow: 1px 1px 4px 1px #65f4f4;
+            border-radius: 2px;
+        }
+
+        .header {
+            background-color: #FFCC2A;
+            padding: 2px;
+            text-align: center;
+        }
+
+        .invoice-text {
+            letter-spacing: 10px;
+            color: #8A422C
+        }
+
+        .body {
+            padding: 5px 20px;
+
+        }
+
+        .header-row {
+            width: 100%;
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .biling-section {
+            justify-content: space-between;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .biling-detail {
+            width: 37.5%;
+            float: right;
+            margin: 20px 0px;
+        }
+
+        .left-view{
+            width: 40%;
+            text-align: left;
+        }
+        .right-view{
+            width: 60%;
+    text-align: end;
+        }
+
+        .biling-detail th {
+            width: 40%;
+        }
+
+        .p-img {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-view">
+        <div class="header">
+            <p class="invoice-text">INVOICE</p>
+        </div>
+        <div class="body">
+            <div class="header-row">
+                <div class="left-view">
+                    <div><strong>Name:</strong><%= invoice_to %></div>
+                    <div><strong>Mobile:</strong><%= invoice_to_mobile %></div>
+                    <div><strong>Email:</strong><%= invoice_to_email %></div>
+                </div>
+                <div class="right-view" style="float: right;">
+                    <img src='https://res.cloudinary.com/cook-cookies/image/upload/v1601625577/logoa_oj8lp2.png'
+                        alt='company logo' width="80" style='align-self: center;
+                    margin-top: 10px;
+                    margin-right: 20px;' />
+                </div>
+
+            </div>
+            <div class="biling-section">
+               <div style="width: 60%;">
+                <div style="margin-top:20px">
+                    <div><strong>Address:</strong> <%= invoice_to_address %></div>
+                    <div><strong>Landmark:</strong> <%= invoice_to_landmark %></div>
+                </div>
+               </div>
+                <table class="biling-detail">
+                    <tbody>
+                        <tr>
+                            <th>Invoice No.</th>
+                            <td><%= invoice_no %></td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td><%= invoice_date %></td>
+                        </tr>
+                        <tr>
+                            <th>Payable Amount</th>
+                            <td>₹<%= payable_amount %><strong>**</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <table style='margin-bottom: 20px;'>
+                <thead>
+                    <th>Sr No.</th>
+                    <th>Product Image</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
+                </thead>
+                <% for(let i = 0; i< products.length; i++){ %>
+                <tr>
+                    <td><%= i+1 %></td>
+                    <td><img class="p-img" alt="product image" src=<%= products[i].image %> /></td>
+                    <td><%=  products[i].product_name %></td>
+                    <td><%=  products[i].category_name %></td>
+                    <td>₹ <%=  products[i].initial_price %></td>
+                    <td>X <%=  products[i].quantity %></td>
+                    <td>₹ <%=  products[i].price %></td>
+                </tr>
+                <% } %>
+            </table>
+            <h3><strong>Owner Detail</strong></h3>
+            <table style="width: 50%;">
+                <tr>
+                    <td><strong>Name:</strong></td>
+                    <td>Chef. Satish Prajapat</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Mobile:</strong></td>
+                    <td>+919461771993 | +918239734359</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>kumarsatish9460@gmail.com</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style='margin-top: 5px;'><strong>Address:</strong></td>
+                    <td> 154,Prajapati bhawan,sodala,jaipur,302006</td>
+                </tr>
+            </table>
+
+            <hr />
+            <div style="margin-bottom: 20px;"><i>** Delivery charges will be extra if your ordered amount below ₹500 or
+                    for detail
+                    contact to owner at Mob. +919461771993 | +918239734359</i>
+
+            </div>
+        </div>
+</body>
+
+</html>
